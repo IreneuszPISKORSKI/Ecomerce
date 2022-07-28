@@ -1,5 +1,5 @@
 <?php
-    $name = "premiere";
+    $name = "Hello";
     $price = "1985€";
     $urlPhoto = "mr-bean.gif";
 ?>
@@ -9,13 +9,9 @@
 <head>
     <title></title>
 </head>
-    <body>
-    <h1>
-        <?=$name?>
-    </h1>
-    <h2>
-        <?=$price?>
-    </h2>
-    <img src="Photo/<?=$urlPhoto?>">
-    </body>
+<body>
+    <h1><?=$name?></h1>
+    <p><?=$price?></p>
+    <img src="Photo/<?=$urlPhoto?>" alt="<?=$urlPhoto?>">
+</body>
 </html>

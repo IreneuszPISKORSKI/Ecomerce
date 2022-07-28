@@ -2,6 +2,8 @@
     $name = "Hello";
     $price = "1985€";
     $urlPhoto = "mr-bean.gif";
+
+    include 'header.php'
 ?>
 
 <!DOCTYPE HTML>
@@ -15,3 +17,7 @@
     <img src="Photo/<?=$urlPhoto?>" alt="<?=$urlPhoto?>">
 </body>
 </html>
+
+<?php
+include 'footer.php'
+?>

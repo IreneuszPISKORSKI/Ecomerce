@@ -6,7 +6,6 @@
     include 'header.php';
 ?>
 
-
 <html>
     <body>
         <div>
@@ -18,5 +17,5 @@
 </html>
 
 <?php
-include 'footer.php';
+    include 'footer.php';
 ?>

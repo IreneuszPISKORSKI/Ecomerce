@@ -1,14 +1,13 @@
 <?php
-
 $iPhone = [
     "name" => "iPhone" ,
     "price" => 9001,
     "weight" => 135,
-    "discount" => "No!",
+    "discount" => null,
     "picture_url" => "image/iPhone.jpg"
 ]
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,3 +26,4 @@ $iPhone = [
 </div>
 </body>
 </html>
+

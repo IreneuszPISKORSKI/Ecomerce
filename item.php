@@ -9,9 +9,11 @@
 
 <html>
     <body>
-        <h1><?= $name ?></h1>
-        <p><?= $price ?></p>
-        <img src="image/<?= $urlPhoto ?>" alt="<?= $altOfPhoto ?>">
+        <div>
+            <h1><?= $name ?></h1>
+            <p><?= $price ?></p>
+            <img src="image/<?= $urlPhoto ?>" alt="<?= $altOfPhoto ?>">
+        </div>
     </body>
 </html>
 

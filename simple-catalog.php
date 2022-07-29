@@ -3,5 +3,6 @@
     sort($products);
 
     echo $products[0];
-    echo "\n";
+    echo "<br>";
     echo $products[2];
+

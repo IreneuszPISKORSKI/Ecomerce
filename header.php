@@ -7,8 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <h1>Header here</h1>
-    </header>
+<header>
+    <h1>Header here</h1>
+</header>
 </body>
 </html>

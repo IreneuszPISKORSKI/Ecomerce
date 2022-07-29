@@ -55,7 +55,7 @@ $products = [
         <p>Price: <?= $product["price"] ?>€</p>
         <p>Weight: <?= $product["weight"] ?>g</p>
         <p><?php if ($product["discount"] != null) {
-                echo "Discount:" . $product["discount"] . "%";
+                echo "Discount: " . $product["discount"] . "%";
             } ?></p>
         <img src="<?= $product["picture_url"] ?>" alt="Photo of iPhone" height="200">
     </div>

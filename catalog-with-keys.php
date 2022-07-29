@@ -1,6 +1,6 @@
 <?php
 $iPhone = [
-    "name" => "iPhone" ,
+    "name" => "iPhone",
     "price" => 9001,
     "weight" => 135,
     "discount" => null,
@@ -18,11 +18,11 @@ $iPhone = [
 </head>
 <body>
 <div>
-    <h3>Name: <?=$iPhone["name"]?></h3>
-    <p>Price: <?=$iPhone["price"]?>€</p>
-    <p>Weight: <?=$iPhone["weight"]?>kg</p>
-    <p>Discount: <?=$iPhone["discount"]?></p>
-    <img src="<?=$iPhone["picture_url"]?>" alt="Photo of iPhone" height="500">
+    <h3>Name: <?= $iPhone["name"] ?></h3>
+    <p>Price: <?= $iPhone["price"] ?>€</p>
+    <p>Weight: <?= $iPhone["weight"] ?>kg</p>
+    <p>Discount: <?= $iPhone["discount"] ?></p>
+    <img src="<?= $iPhone["picture_url"] ?>" alt="Photo of iPhone" height="500">
 </div>
 </body>
 </html>

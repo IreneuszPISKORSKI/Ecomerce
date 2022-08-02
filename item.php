@@ -4,6 +4,7 @@ $price = "1985€";
 $urlPhoto = "mr-bean.gif";
 $altOfPhoto = "Gif of Mr Bean";
 include 'header.php';
+include "my-functions.php";
 ?>
 
     <html>

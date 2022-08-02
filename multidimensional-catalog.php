@@ -2,18 +2,19 @@
 $products = [
     "iPhone" => [
         "name" => "iPhone",
-        "price" => 450,
+        "price" => 45000,
         "weight" => 200,
         "discount" => 10,
         "picture_url" => "image/iPhone.jpg"
     ],
     "iPad" => [
         "name" => "iPad",
-        "price" => 450,
+        "price" => 45000,
         "weight" => 400,
         "discount" => null,
         "picture_url" => "image/iPad.png"
     ]];
+include "my-functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +53,7 @@ $products = [
     <div>
         <h2><?= $modelTel ?></h2>
         <h3>Name: <?= $product["name"] ?></h3>
-        <p>Price: <?= $product["price"] ?>€</p>
+        <p>Price: <?= formatPrice($product["price"]) ?>€</p>
         <p>Weight: <?= $product["weight"] ?>g</p>
         <p><?php if ($product["discount"] != null) {
                 echo "Discount: " . $product["discount"] . "%";

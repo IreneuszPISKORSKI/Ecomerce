@@ -1,3 +1,7 @@
+<?php
+include "my-functions.php";
+?>
+
 <html>
 <body>
 <footer>

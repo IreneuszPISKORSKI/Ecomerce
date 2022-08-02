@@ -1,3 +1,6 @@
+<?php
+include "my-functions.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

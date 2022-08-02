@@ -1,11 +1,12 @@
 <?php
 $iPhone = [
     "name" => "iPhone",
-    "price" => 9001,
+    "price" => 90010,
     "weight" => 135,
     "discount" => null,
     "picture_url" => "image/iPhone.jpg"
-]
+];
+include "my-functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@ $iPhone = [
 <body>
 <div>
     <h3>Name: <?= $iPhone["name"] ?></h3>
-    <p>Price: <?= $iPhone["price"] ?>€</p>
+    <p>Price: <?= formatPrice($iPhone["price"]) ?>€</p>
     <p>Weight: <?= $iPhone["weight"] ?>kg</p>
     <p>Discount: <?= $iPhone["discount"] ?></p>
     <img src="<?= $iPhone["picture_url"] ?>" alt="Photo of iPhone" height="500">

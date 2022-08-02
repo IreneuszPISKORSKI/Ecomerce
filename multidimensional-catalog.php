@@ -31,13 +31,14 @@ include "my-functions.php";
     <div>
         <h2><?= $modelTel ?></h2>
         <h3>Name: <?= $product["name"] ?></h3>
-        <p>Price: <?= formatPrice($product["price"]) ?></p>
-        <p>Price w/o VAT: <?= formatPrice(priceExcludingVAT($product["price"])) ?></p>
+        <p>Price: <?php formatPrice($product["price"]) ?></p>
+        <p>Price w/o VAT: <?php formatPrice(priceExcludingVAT($product["price"])) ?></p>
         <p>Weight: <?= $product["weight"] ?>g</p>
         <p><?php if ($product["discount"] != null) {
                 echo "Discount: " . $product["discount"] . "%";
             } ?></p>
-        <p><?php if ($product["discount"] != null) {?> Price with discount: <?php formatPrice(discountedPrice($product["price"],$product["discount"]));
+        <p><?php if ($product["discount"] != null) {
+                echo "Price with discount: " . formatPrice(discountedPrice($product["price"],$product["discount"]));
             } ?></p>
         <img src="<?= $product["picture_url"] ?>" alt="Photo of iPhone" height="200">
     </div>

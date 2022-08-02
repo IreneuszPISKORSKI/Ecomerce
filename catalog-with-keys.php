@@ -20,11 +20,11 @@ include "my-functions.php";
 <body>
 <div>
     <h3>Name: <?= $iPhone["name"] ?></h3>
-    <p>Price: <?= formatPrice($iPhone["price"]) ?></p>
-    <p>Price w/o VAT: <?= formatPrice(priceExcludingVAT($iPhone["price"])) ?></p>
+    <p>Price: <?php formatPrice($iPhone["price"]) ?></p>
+    <p>Price w/o VAT: <?php formatPrice(priceExcludingVAT($iPhone["price"])) ?></p>
     <p>Weight: <?= $iPhone["weight"] ?>kg</p>
     <p>Discount: <?= $iPhone["discount"] ?>%</p>
-    <p>Price with discount: <?= formatPrice(discountedPrice($iPhone["price"],$iPhone["discount"])) ?></p>
+    <p>Price with discount: <?php formatPrice(discountedPrice($iPhone["price"],$iPhone["discount"])) ?></p>
     <img src="<?= $iPhone["picture_url"] ?>" alt="Photo of iPhone" height="500">
 </div>
 </body>

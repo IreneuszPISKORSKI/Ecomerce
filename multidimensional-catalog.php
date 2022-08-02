@@ -37,8 +37,7 @@ include "my-functions.php";
         <p><?php if ($product["discount"] != null) {
                 echo "Discount: " . $product["discount"] . "%";
             } ?></p>
-        <p><?php if ($product["discount"] != null) {
-                echo "Price with discount: " . formatPrice(discountedPrice($product["price"],$product["discount"]));
+        <p><?php if ($product["discount"] != null) {?>Price with discount: <?php formatPrice(discountedPrice($product["price"],$product["discount"]));
             } ?></p>
         <img src="<?= $product["picture_url"] ?>" alt="Photo of iPhone" height="200">
     </div>

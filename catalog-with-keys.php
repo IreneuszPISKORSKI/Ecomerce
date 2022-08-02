@@ -20,7 +20,8 @@ include "my-functions.php";
 <body>
 <div>
     <h3>Name: <?= $iPhone["name"] ?></h3>
-    <p>Price: <?= formatPrice($iPhone["price"]) ?>€</p>
+    <p>Price: <?= formatPrice($iPhone["price"]) ?></p>
+    <p>Price w/o VAT: <?= priceExcludingVAT($iPhone["price"]) ?></p>
     <p>Weight: <?= $iPhone["weight"] ?>kg</p>
     <p>Discount: <?= $iPhone["discount"] ?></p>
     <img src="<?= $iPhone["picture_url"] ?>" alt="Photo of iPhone" height="500">

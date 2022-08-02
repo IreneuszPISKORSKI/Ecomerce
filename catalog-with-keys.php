@@ -3,7 +3,7 @@ $iPhone = [
     "name" => "iPhone",
     "price" => 90010,
     "weight" => 135,
-    "discount" => null,
+    "discount" => 10,
     "picture_url" => "image/iPhone.jpg"
 ];
 include "my-functions.php";
@@ -23,7 +23,8 @@ include "my-functions.php";
     <p>Price: <?= formatPrice($iPhone["price"]) ?></p>
     <p>Price w/o VAT: <?= priceExcludingVAT($iPhone["price"]) ?></p>
     <p>Weight: <?= $iPhone["weight"] ?>kg</p>
-    <p>Discount: <?= $iPhone["discount"] ?></p>
+    <p>Discount: <?= $iPhone["discount"] ?>%</p>
+    <p>Price with discount: <?= discountedPrice($iPhone["price"],$iPhone["discount"]) ?></p>
     <img src="<?= $iPhone["picture_url"] ?>" alt="Photo of iPhone" height="500">
 </div>
 </body>

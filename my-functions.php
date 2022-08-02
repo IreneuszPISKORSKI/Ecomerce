@@ -1,13 +1,13 @@
 <?php
 
 function formatPrice($enCentimes){
-    return number_format(($enCentimes/100),2, ",") . "€";
+    echo number_format(($enCentimes/100),2, ",") . "€";
 }
 
 function priceExcludingVAT($priceTTC){
-    return formatPrice((100*$priceTTC)/120);
+    return (100*$priceTTC)/120;
 }
 
 function discountedPrice($price,$discount){
-    return formatPrice($price - (($price*$discount)/100));
+    return $price - (($price*$discount)/100);
 }

@@ -34,11 +34,20 @@ include "my-functions.php";
         <p>Price: <?php formatPrice($product["price"]) ?></p>
         <p>Price w/o VAT: <?php formatPrice(priceExcludingVAT($product["price"])) ?></p>
         <p>Weight: <?= $product["weight"] ?>g</p>
-        <p><?php if ($product["discount"] != null) {
-                echo "Discount: " . $product["discount"] . "%";
-            } ?></p>
-        <p><?php if ($product["discount"] != null) {?>Price with discount: <?php formatPrice(discountedPrice($product["price"],$product["discount"]));
-            } ?></p>
+<!-- ---------------------------------------old------------------------------------------------------------  -->
+<!--        --><?php //if ($product["discount"] !== null) {
+//            echo "<p>Discount: " . $product["discount"] . "%</p>";
+//            echo "<p>Price with discount:" ?>
+<!--            --><?php //formatPrice(discountedPrice($product["price"],$product["discount"]));
+//            echo "</p>";
+//        } ?>
+<!-- ---------------------------------------old------------------------------------------------------------  -->
+        <?php if ($product["discount"] !== null) { ?>
+            <p>Discount: <?php echo $product["discount"]; ?> %</p>
+            <p>Price with discount:
+                <?php formatPrice(discountedPrice($product["price"],$product["discount"])); ?>
+            </p>
+        <?php } ?>
         <img src="<?= $product["picture_url"] ?>" alt="Photo of iPhone" height="200">
     </div>
 <?php } ?>

@@ -1,6 +1,5 @@
 <?php
 include "my-functions.php";
-var_dump($_POST);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +11,10 @@ var_dump($_POST);
     <title>Cart</title>
 </head>
 <body>
+<!--<pre>--><?php
+//    var_dump($_POST);
+//    ?>
+<!--</pre>-->
     <div class="containerCart">
         <div>Product</div>
         <div>Price per unit</div>
@@ -19,10 +22,10 @@ var_dump($_POST);
         <div>Total</div>
     </div>
     <div class="containerCart">
-        <div><?=$_POST['product[\'name\']']?></div>
-<!--        <div>--><?php //formatPrice($_POST["product"['price']]) ?><!--</div>-->
-        <div>Quantity</div>
-        <div>Total</div>
+        <div><?=$_POST["productName"]?></div>
+        <div><?php formatPrice($_POST["productPrice"])?></div>
+        <div><?=$_POST["productQuantity"]?></div>
+        <div><?php formatPrice($_POST["productPrice"]*$_POST["productQuantity"])?></div>
     </div>
 
 <!--    --><?php //foreach ($_POST as $modelTel => $product) { ?>

@@ -47,12 +47,12 @@ include "my-functions.php";
                 <?php } ?>
                 <form action="cart.php" method="post">
                     <label for="quantity">Quantity:
-                        <input type="number" name="product['quantity']" required min="1">
+                        <input type="number" name="productQuantity" required min="1">
                     </label>
-                    <input type="hidden" name="product['name']" value="<?=$product["name"]?>">
-                    <input type="hidden" name="product['price']" value="<?=$product["price"]?>">
-                    <input type="hidden" name="product['discount']" value="<?=$product["discount"]?>">
-                    <input type="hidden" name="product['weight']" value="<?=$product["weight"]?>">
+                    <input type="hidden" name="productName" value="<?=$product["name"]?>">
+                    <input type="hidden" name="productPrice" value="<?=$product["price"]?>">
+                    <input type="hidden" name="productDiscount" value="<?=$product["discount"]?>">
+                    <input type="hidden" name="productWeight" value="<?=$product["weight"]?>">
                     <button type="submit">Order</button>
                 </form>
             </div>

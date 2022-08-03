@@ -39,23 +39,20 @@ include "my-functions.php";
                 <p>Price: <?php formatPrice($product["price"]) ?></p>
                 <p>Price w/o VAT: <?php formatPrice(priceExcludingVAT($product["price"])) ?></p>
                 <p>Weight: <?= $product["weight"] ?>g</p>
-                <!-- ---------------------------------------old------------------------------------------------------------  -->
-                <!--        --><?php //if ($product["discount"] !== null) {
-                //            echo "<p>Discount: " . $product["discount"] . "%</p>";
-                //            echo "<p>Price with discount:" ?>
-                <!--            --><?php //formatPrice(discountedPrice($product["price"],$product["discount"]));
-                //            echo "</p>";
-                //        } ?>
-                <!-- ---------------------------------------old------------------------------------------------------------  -->
                 <?php if ($product["discount"] !== null) { ?>
                     <p>Discount: <?php echo $product["discount"]; ?> %</p>
                     <p>Price with discount:
                         <?php formatPrice(discountedPrice($product["price"], $product["discount"])); ?>
                     </p>
                 <?php } ?>
-                <form method="get">
-                    <label for="quantity">Quantity: </label>
-                    <input type="number" name="quantity" required min="1">
+                <form action="cart.php" method="post">
+                    <label for="quantity">Quantity:
+                        <input type="number" name="product['quantity']" required min="1">
+                    </label>
+                    <input type="hidden" name="product['name']" value="<?=$product["name"]?>">
+                    <input type="hidden" name="product['price']" value="<?=$product["price"]?>">
+                    <input type="hidden" name="product['discount']" value="<?=$product["discount"]?>">
+                    <input type="hidden" name="product['weight']" value="<?=$product["weight"]?>">
                     <button type="submit">Order</button>
                 </form>
             </div>

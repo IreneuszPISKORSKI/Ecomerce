@@ -15,21 +15,33 @@ include "my-functions.php";
 //    var_dump($_POST);
 //    ?>
 <!--</pre>-->
-    <div class="containerCart">
-        <div>Product</div>
-        <div>Price per unit</div>
-        <div>Quantity</div>
-        <div>Total</div>
-    </div>
-    <div class="containerCart">
-        <div><?=$_POST["productName"]?></div>
-        <div><?php formatPrice($_POST["productPrice"])?></div>
-        <div><?=$_POST["productQuantity"]?></div>
-        <div><?php formatPrice($_POST["productPrice"]*$_POST["productQuantity"])?></div>
-    </div>
+<div class="containerCart">
+    <div>Product</div>
+    <div>Price per unit</div>
+    <div>Quantity</div>
+    <div>Total</div>
+</div>
+<div class="containerCart">
+    <div><?= $_POST["productName"] ?></div>
 
-<!--    --><?php //foreach ($_POST as $modelTel => $product) { ?>
+    <?php if ($_POST["productDiscount"] !== "0") { ?>
+        <div>
+            <div id="discountApply"><?php formatPrice($_POST["productPrice"]) ?></div>
+            <div><?php formatPrice(discountedPrice($_POST["productPrice"], $_POST["productDiscount"])); ?></div>
+        </div>
+    <?php }else{ ?>
+    <div><?php formatPrice($_POST["productPrice"]) ?></div>
+        <?php } ?>
 
+        <div><?= $_POST["productQuantity"] ?></div>
+
+        <?php if ($_POST["productDiscount"] !== "0") { ?>
+            <div><?php formatPrice(discountedPrice($_POST["productPrice"], $_POST["productDiscount"]) * $_POST["productQuantity"]) ?></div>
+        <?php } else { ?>
+            <div><?php formatPrice($_POST["productPrice"] * $_POST["productQuantity"]) ?></div>
+        <?php } ?>
+    </div>
+    <br>
     <div class="containerSummary">
         <div class="summary">
             <div>Total HT</div>
@@ -37,9 +49,15 @@ include "my-functions.php";
             <div>Total TTC</div>
         </div>
         <div class="summary">
-            <div>ex 132</div>
-            <div>ex 21</div>
-            <div>ex 153</div>
+            <?php if ($_POST["productDiscount"] !== "0") { ?>
+                <div><?php formatPrice(priceExcludingVAT(discountedPrice($_POST["productPrice"], $_POST["productDiscount"]) * $_POST["productQuantity"])) ?></div>
+                <div><?php formatPrice(discountedPrice($_POST["productPrice"], $_POST["productDiscount"]) * $_POST["productQuantity"] - priceExcludingVAT(discountedPrice($_POST["productPrice"], $_POST["productDiscount"]) * $_POST["productQuantity"])) ?></div>
+                <div><?php formatPrice(discountedPrice($_POST["productPrice"], $_POST["productDiscount"]) * $_POST["productQuantity"]) ?></div>
+            <?php } else { ?>
+                <div><?php formatPrice(priceExcludingVAT($_POST["productPrice"] * $_POST["productQuantity"])) ?></div>
+                <div><?php formatPrice($_POST["productPrice"] * $_POST["productQuantity"] - priceExcludingVAT($_POST["productPrice"] * $_POST["productQuantity"])) ?></div>
+                <div><?php formatPrice($_POST["productPrice"] * $_POST["productQuantity"]) ?></div>
+            <?php } ?>
         </div>
 
     </div>

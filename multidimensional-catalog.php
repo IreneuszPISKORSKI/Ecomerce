@@ -51,7 +51,11 @@ include "my-functions.php";
                     </label>
                     <input type="hidden" name="productName" value="<?=$product["name"]?>">
                     <input type="hidden" name="productPrice" value="<?=$product["price"]?>">
+                    <?php if ($product["discount"] !== null) { ?>
                     <input type="hidden" name="productDiscount" value="<?=$product["discount"]?>">
+                    <?php }else{ ?>
+                        <input type="hidden" name="productDiscount" value="0">
+                    <?php } ?>
                     <input type="hidden" name="productWeight" value="<?=$product["weight"]?>">
                     <button type="submit">Order</button>
                 </form>

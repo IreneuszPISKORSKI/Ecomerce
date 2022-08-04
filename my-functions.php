@@ -1,7 +1,7 @@
 <?php
 
 function formatPrice(int $enCentimes):void{
-    echo number_format(($enCentimes/100),2, ",") . "€";
+    echo number_format(($enCentimes/100),2, ",", ".") . "€";
 }
 
 function priceExcludingVAT(int $priceTTC):int{

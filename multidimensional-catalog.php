@@ -13,6 +13,20 @@ $products = [
         "weight" => 400,
         "discount" => null,
         "picture_url" => "image/iPad.png"
+    ],
+    "iCat" => [
+        "name" => "iCat",
+        "price" => 65000,
+        "weight" => 1200,
+        "discount" => 30,
+        "picture_url" => "image/iCat.jpg"
+    ],
+    "iDog" => [
+        "name" => "iDog",
+        "price" => 56000,
+        "weight" => 2100,
+        "discount" => 5,
+        "picture_url" => "image/iDog.jpg"
     ]];
 include "my-functions.php";
 ?>

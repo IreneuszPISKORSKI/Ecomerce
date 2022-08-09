@@ -27,3 +27,8 @@
     text-decoration: line-through;
     font-size: smaller;
 }
+
+.transporter{
+    display: flex;
+    justify-content: center;
+}

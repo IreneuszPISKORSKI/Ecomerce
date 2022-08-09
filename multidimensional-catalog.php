@@ -42,6 +42,7 @@ include "my-functions.php";
 </head>
 <body>
 <div>
+    <form action="cart.php" method="post">
     <?php foreach ($products as $modelTel => $product) { ?>
         <h2><?= $modelTel ?></h2>
         <div class="container">
@@ -59,22 +60,22 @@ include "my-functions.php";
                         <?php formatPrice(discountedPrice($product["price"], $product["discount"])); ?>
                     </p>
                 <?php } ?>
-                <form action="cart.php" method="post">
+
                     <label for="quantity">Quantity:
-                        <input type="number" name="productQuantity" required min="1">
+                        <input type="number" name="<?= $product["name"] ?>[quantity]" min="0">
                     </label>
-                    <input type="hidden" name="productName" value="<?=$product["name"]?>">
-                    <input type="hidden" name="productPrice" value="<?=$product["price"]?>">
+                    <input type="hidden" name="<?= $product["name"] ?>[name]" value="<?=$product["name"]?>">
+                    <input type="hidden" name="<?= $product["name"] ?>[price]" value="<?=$product["price"]?>">
                     <?php if ($product["discount"] !== null) { ?>
-                    <input type="hidden" name="productDiscount" value="<?=$product["discount"]?>">
+                    <input type="hidden" name="<?= $product["name"] ?>[discount]" value="<?=$product["discount"]?>">
                     <?php }else{ ?>
-                        <input type="hidden" name="productDiscount" value="0">
+                        <input type="hidden" name="<?= $product["name"] ?>[discount]" value="0">
                     <?php } ?>
-                    <input type="hidden" name="productWeight" value="<?=$product["weight"]?>">
-                    <button type="submit">Order</button>
-                </form>
+                    <input type="hidden" name="<?= $product["name"] ?>[weight]" value="<?=$product["weight"]?>">
             </div>
         </div>
     <?php } ?>
+
+    <button type="submit">Order</button></form>
 </body>
 </html>

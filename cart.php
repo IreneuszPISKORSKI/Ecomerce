@@ -1,14 +1,22 @@
 <?php
 include "my-functions.php";
     session_start();
+    if (!isset($_POST)||!isset($_SESSION)){                                 //do poprawy warunek
+        header('Location: multidimensional-catalog.php');
+        exit;
+    }
 
     if (isset ($_POST)){
     foreach ($_POST as $modelTel => $product) {
         $_SESSION[$modelTel]["quantity"] = $product["quantity"];
         $_SESSION[$modelTel]["name"] = $product["name"];
-        $_SESSION[$modelTel]["price"] = $product["price"];
+        if ($product["discount"] !== "0") {
+            $_SESSION[$modelTel]["priceWOReduction"] = $product["price"];
+            $_SESSION[$modelTel]["price"] = discountedPrice($product["price"], $product["discount"]);
+        } else {$_SESSION[$modelTel]["price"] = $product["price"];}
         $_SESSION[$modelTel]["discount"] = $product["discount"];
         $_SESSION[$modelTel]["weight"] = $product["weight"];
+
         }
     }
 
@@ -23,16 +31,16 @@ include "my-functions.php";
     <title>Cart</title>
 </head>
 <body>
-<!--<pre>--><?php
-//    echo "Post:";
-//    var_dump($_POST);
-//    ?>
-<!--</pre>-->
-<!--<pre>--><?php
-//    echo "Session:";
-//    var_dump($_SESSION);
-//    ?>
-<!--</pre>-->
+<pre><?php
+    echo "Post:";
+    var_dump($_POST);
+    ?>
+</pre>
+<pre><?php
+    echo "Session:";
+    var_dump($_SESSION);
+    ?>
+</pre>
 <pre>Transport:<?php
     echo "Get:";
     var_dump($_GET);
@@ -53,8 +61,8 @@ foreach ($_SESSION as $modelTel => $product){
 
     <?php if ($product["discount"] !== "0") { ?>
         <div>
-            <div id="discountApply"><?php formatPrice($product["price"]) ?></div>
-            <div><?php formatPrice(discountedPrice($product["price"], $product["discount"])); ?></div>
+            <div id="discountApply"><?php formatPrice($product["priceWOReduction"]) ?></div>
+            <div><?php formatPrice($product["price"]); ?></div>
         </div>
     <?php } else { ?>
         <div><?php formatPrice($product["price"]) ?></div>

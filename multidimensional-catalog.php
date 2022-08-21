@@ -41,41 +41,48 @@ include "my-functions.php";
     <title>Multidimensional-catalog</title>
 </head>
 <body>
-<div>
-    <form action="cart.php" method="post">
-    <?php foreach ($products as $modelTel => $product) { ?>
-        <h2><?= $modelTel ?></h2>
-        <div class="container">
+<form action="cart.php" method="post">
+    <div class="containerAll">
+        <?php foreach ($products as $modelTel => $product) { ?>
             <div>
-                <img src="<?= $product["picture_url"] ?>" alt="Photo of iPhone" height="300">
-            </div>
-            <div>
-                <h3>Name: <?= $product["name"] ?></h3>
-                <p>Price: <?php formatPrice($product["price"]) ?></p>
-                <p>Price w/o VAT: <?php formatPrice(priceExcludingVAT($product["price"])) ?></p>
-                <p>Weight: <?= $product["weight"] ?>g</p>
-                <?php if ($product["discount"] !== null) { ?>
-                    <p>Discount: <?php echo $product["discount"]; ?> %</p>
-                    <p>Price with discount:
-                        <?php formatPrice(discountedPrice($product["price"], $product["discount"])); ?>
-                    </p>
-                <?php } ?>
+                <h1 style="text-align: center; color: blue"><?= $modelTel ?></h1>
+                <div class="containerItem">
+                    <div>
+                        <img src="<?= $product["picture_url"] ?>" alt="Photo of iPhone" height="100">
+                    </div>
+                    <div>
+                        <h3>Name: <?= $product["name"] ?></h3>
+                        <p>Price: <?php formatPrice($product["price"]) ?></p>
+                        <p>Price w/o VAT: <?php formatPrice(priceExcludingVAT($product["price"])) ?></p>
+                        <p>Weight: <?= $product["weight"] ?>g</p>
+                        <?php if ($product["discount"] !== null) { ?>
+                            <p>Discount: <?php echo $product["discount"]; ?> %</p>
+                            <p>Price with discount:
+                                <?php formatPrice(discountedPrice($product["price"], $product["discount"])); ?>
+                            </p>
+                        <?php } ?>
 
-                    <label for="quantity">Quantity:
-                        <input type="number" name="<?= $product["name"] ?>[quantity]" min="0">
-                    </label>
-                    <input type="hidden" name="<?= $product["name"] ?>[name]" value="<?=$product["name"]?>">
-                    <input type="hidden" name="<?= $product["name"] ?>[price]" value="<?=$product["price"]?>">
-                    <?php if ($product["discount"] !== null) { ?>
-                    <input type="hidden" name="<?= $product["name"] ?>[discount]" value="<?=$product["discount"]?>">
-                    <?php }else{ ?>
-                        <input type="hidden" name="<?= $product["name"] ?>[discount]" value="0">
-                    <?php } ?>
-                    <input type="hidden" name="<?= $product["name"] ?>[weight]" value="<?=$product["weight"]?>">
+                        <label for="quantity">Quantity:
+                            <input type="number" name="<?= $product["name"] ?>[quantity]" min="0">
+                        </label>
+                        <input type="hidden" name="<?= $product["name"] ?>[name]" value="<?= $product["name"] ?>">
+                        <input type="hidden" name="<?= $product["name"] ?>[price]" value="<?= $product["price"] ?>">
+                        <?php if ($product["discount"] !== null) { ?>
+                            <input type="hidden" name="<?= $product["name"] ?>[discount]"
+                                   value="<?= $product["discount"] ?>">
+                        <?php } else { ?>
+                            <input type="hidden" name="<?= $product["name"] ?>[discount]" value="0">
+                        <?php } ?>
+                        <input type="hidden" name="<?= $product["name"] ?>[weight]" value="<?= $product["weight"] ?>">
+                    </div>
+                </div>
             </div>
-        </div>
-    <?php } ?>
-
-    <button type="submit">Order</button></form>
+        <?php } ?>
+    </div>
+    <div id="validationButtonContainer">
+        <button type="submit" id="validationButton">Add to cart</button>
+        <a href="clear-session.php">Clear cart</a>
+    </div>
+</form>
 </body>
 </html>

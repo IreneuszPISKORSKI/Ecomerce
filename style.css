@@ -1,6 +1,10 @@
-.container{
+.containerItem{
     display: flex;
     flex-direction: row;
+    border: black solid 3px;
+    background: darkseagreen;
+    margin: 5px;
+    padding: 3px;
 }
 .containerCart{
     display: flex;
@@ -12,6 +16,11 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+}
+
+.containerAll{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .summary{
@@ -31,4 +40,17 @@
 .transporter{
     display: flex;
     justify-content: center;
+}
+
+#validationButtonContainer{
+    display: flex;
+    justify-content: center;
+}
+
+#validationButton{
+    /*display: flex;*/
+    /*justify-content: center;*/
+    align-items: center;
+    height: 50px;
+    width: 250px;
 }

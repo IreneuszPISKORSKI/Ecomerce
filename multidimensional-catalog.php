@@ -63,7 +63,7 @@ include "my-functions.php";
                         <?php } ?>
 
                         <label for="quantity">Quantity:
-                            <input type="number" name="<?= $product["name"] ?>[quantity]" min="0">
+                            <input type="number" name="<?= $product["name"] ?>[quantity]" value="0" min="0">
                         </label>
                         <input type="hidden" name="<?= $product["name"] ?>[name]" value="<?= $product["name"] ?>">
                         <input type="hidden" name="<?= $product["name"] ?>[price]" value="<?= $product["price"] ?>">
@@ -79,8 +79,10 @@ include "my-functions.php";
             </div>
         <?php } ?>
     </div>
-    <div id="validationButtonContainer">
-        <button type="submit" id="validationButton">Add to cart</button>
+    <div class="validationButtonContainer">
+        <button type="submit" id="validationButton">Order</button>
+    </div>
+    <div class="validationButtonContainer">
         <a href="clear-session.php">Clear cart</a>
     </div>
 </form>

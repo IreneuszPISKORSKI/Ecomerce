@@ -7,6 +7,10 @@ if (!isset($_SESSION["iPhone"]) && !isset($_POST["iPhone"])) {
     exit;
 }
 
+if (!isset($_GET["dropdown"])){
+    $_GET["dropdown"] = 4;
+}
+
 if (isset ($_POST)) {
     foreach ($_POST as $modelTel => $product) {
         if ($product["quantity"] < 0) {
@@ -26,8 +30,6 @@ if (isset ($_POST)) {
 
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,8 +42,8 @@ if (isset ($_POST)) {
 </head>
 <body>
 <!--<pre>--><?php
-//    echo "Post:";
-//    var_dump($_POST);
+//    echo "Get:";
+//    var_dump($_GET);
 //    ?>
 <!--</pre>-->
 <!--<pre>--><?php
@@ -83,35 +85,29 @@ foreach ($_SESSION as $product) {
 
             <div><?= $product["quantity"] ?></div>
 
-            <?php if ($product["discount"] !== "0") { ?>
-                <div><?php formatPrice(discountedPrice($product["price"], $product["discount"]) * $product["quantity"]) ?></div>
-            <?php } else { ?>
-                <div><?php formatPrice($product["price"] * $product["quantity"]) ?></div>
-            <?php } ?>
+            <div><?php formatPrice($product["price"] * $product["quantity"]) ?></div>
         </div>
     <?php }
 } ?>
 <br/>
-<!--<div class="containerSummary">-->
-<!--    <div class="summary">-->
-<!--        <div>Total HT</div>-->
-<!--        <div>TVA</div>-->
-<!--        <div>Total TTC</div>-->
-<!--    </div>-->
-<!--    <div class="summary">-->
-<!--        --><?php //if ($product["discount"] !== "0") { ?>
-<!--            <div>-->
-<?php //formatPrice(allProductsExcludingVAT($product["price"], $product["discount"], $product["quantity"])) ?><!--</div>-->
-<!--            <div>-->
-<?php //formatPrice(discountedPrice($product["price"], $product["discount"]) * $product["quantity"] - allProductsExcludingVAT($product["price"], $product["discount"], $product["quantity"])) ?><!--</div>-->
-<!--        --><?php //} else { ?>
-<!--            <div>--><?php //formatPrice(priceExcludingVAT($product["price"] * $product["quantity"])) ?><!--</div>-->
-<!--            <div>-->
-<?php //formatPrice($product["price"] * $product["quantity"] - priceExcludingVAT($product["price"] * $product["quantity"])) ?><!--</div>-->
-<!--            <div>--><?php //formatPrice($product["price"] * $product["quantity"]) ?><!--</div>-->
-<!--        --><?php //} ?>
-<!--    </div>-->
-<!--</div>-->
+<div class="containerSummary">
+    <div class="summary">
+        <div>Total HT</div>
+        <div>TVA</div>
+        <div>Total TTC</div>
+    </div>
+    <div class="summary">
+        <div>
+            <?php formatPrice(allProductsExcludingVAT()) ?>
+        </div>
+        <div>
+            <?php formatPrice(allProductsPrice()-allProductsExcludingVAT()) ?>
+        </div>
+        <div>
+            <?php formatPrice(allProductsPrice()) ?>
+        </div>
+    </div>
+</div>
 <hr>
 
 <div class="transporter">
@@ -119,27 +115,13 @@ foreach ($_SESSION as $product) {
         <label for="dropdown">Select transporter:
             <select name="dropdown">
                 <option value="">Choose wisely</option>
-                <option value="first">DPD</option>
-                <option value="second">La poste</option>
-                <option value="third">Pickup in person</option>
+                <option value=1>DPD</option>
+                <option value=2>La Poste</option>
+                <option value=3>Pickup in person</option>
             </select>
         </label>
         <button>Confirm</button>
     </form>
-
-    <?php switch ($_GET["dropdown"] = "") {
-        case "first":
-            echo "1st option";
-            break;
-        case "second":
-            echo "2nd option";
-            break;
-        case "third":
-            echo "3th option";
-            break;
-        default:
-            break;
-    } ?>
 </div>
 <div class="containerSummary">
     <div class="summary">
@@ -149,11 +131,32 @@ foreach ($_SESSION as $product) {
         <div>Total price:</div>
     </div>
     <div class="summary">
-        <div>Total HT</div>
-        <!--        <div>-->
-        <?php //shippingWeight($_SESSION[$modelTel]["quantity"], $_SESSION[$modelTel]["weight"]) ?><!--</div>-->
-        <div>Total TTC</div>
-        <div>Total TTC</div>
+        <?php switch ($_GET["dropdown"]) {
+            case 1:
+                echo "DPD</br>";
+                echo allProductsWeight()/1000 . "kg</br>";
+                echo formatPrice(shippingDPD()) . "</br>";
+                formatPrice(allProductsPrice() + shippingDPD() );
+                break;
+            case 2:
+                echo "La Poste</br>";
+                echo allProductsWeight()/1000 . "kg</br>";
+                echo formatPrice(shippingLaPoste()) . "</br>";
+                formatPrice(allProductsPrice() + shippingLaPoste());
+                break;
+            case 3:
+                echo "Pickup in person</br>";
+                echo allProductsWeight()/1000 . "kg</br>";
+                echo "0€</br>";
+                formatPrice(allProductsPrice());
+                break;
+            default:
+                echo "Type</br>";
+                echo allProductsWeight()/1000 . "kg</br>";
+                echo "shipping cost</br>";
+                echo "Total price";
+                break;
+        } ?>
     </div>
 </div>
 </body>

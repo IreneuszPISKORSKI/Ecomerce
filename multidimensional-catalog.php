@@ -1,4 +1,8 @@
 <?php
+
+require_once 'database.php';
+include "my-functions.php";
+
 $products = [
     "iPhone" => [
         "name" => "iPhone",
@@ -28,7 +32,6 @@ $products = [
         "discount" => 5,
         "picture_url" => "image/iDog.jpg"
     ]];
-include "my-functions.php";
 ?>
 
 <!DOCTYPE html>

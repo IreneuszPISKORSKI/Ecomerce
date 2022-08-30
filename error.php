@@ -9,5 +9,5 @@
 </head>
 <body>
 <p>Something went wrong, please try again:</p>
-<button><a href="multidimensional-catalog.php">Home</a></button>
+<button><a href="index.php">Home</a></button>
 </body>

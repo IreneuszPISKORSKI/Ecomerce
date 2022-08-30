@@ -1,36 +1,43 @@
 <?php
-include "my-functions.php";
 session_start();
+require_once 'database.php';
+include "my-functions.php";
+include "query.php";
 
-if (!isset($_SESSION["iPhone"]) && !isset($_POST["iPhone"])) {
-    header('Location: multidimensional-catalog.php');
+if (!isset($_POST[0]) && !isset($_SESSION)) {
+    header('Location: index.php');
     exit;
 }
 
-if (!isset($_GET["dropdown"])){
-    $_GET["dropdown"] = 4;
-}
+echo "<pre>Post:";
+var_dump($_POST);
+echo "</pre>";
 
-if (isset ($_POST)) {
-    foreach ($_POST as $modelTel => $product) {
-        if ($product["quantity"] < 0) {
-            header('Location: error.php');
-            exit;
-        }
-        $_SESSION[$modelTel]["quantity"] = $product["quantity"];
-        $_SESSION[$modelTel]["name"] = $product["name"];
-        if ($product["discount"] !== "0") {
-            $_SESSION[$modelTel]["priceWOReduction"] = $product["price"];
-            $_SESSION[$modelTel]["price"] = discountedPrice($product["price"], $product["discount"]);
-        } else {
-            $_SESSION[$modelTel]["price"] = $product["price"];
-        }
-        $_SESSION[$modelTel]["discount"] = $product["discount"];
-        $_SESSION[$modelTel]["weight"] = $product["weight"];
+if (isset ($_POST[0])) {
+    foreach ($_POST as $key => $product) {
 
+        if ($product['quantity'] > 0) {
+            $_SESSION[$key]['quantity'] = $product['quantity'];
+            $_SESSION[$key]['idItem'] = $product['product_id'];
+        }
     }
 }
-?>
+echo "<pre>Session:";
+var_dump($_SESSION);
+echo "</pre>";
+if (isset($db)) {
+    $productsFromBD = $db->prepare(query: takeAllProducts());
+    $productsFromBD->execute();
+    $products = $productsFromBD->fetchAll();
+} else {
+    echo 'Something went wrong, the database is not available';
+    exit();
+}
+
+//echo "<pre>Session:";
+//var_dump($_SESSION);
+//echo "</pre>";
+//?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,8 +49,8 @@ if (isset ($_POST)) {
 </head>
 <body>
 <!--<pre>--><?php
-//    echo "Get:";
-//    var_dump($_GET);
+//    echo "Post:";
+//    var_dump($_POST);
 //    ?>
 <!--</pre>-->
 <!--<pre>--><?php
@@ -51,13 +58,9 @@ if (isset ($_POST)) {
 //    var_dump($_SESSION);
 //    ?>
 <!--</pre>-->
-<!--<pre>Transport:--><?php
-//    echo "Get:";
-//    var_dump($_GET);
-//    ?>
-<!--</pre>-->
+
 <div class="validationButtonContainer">
-    <a href="multidimensional-catalog.php">
+    <a href="index.php">
         <button id="validationButton">Back</button>
     </a>
 </div>
@@ -68,24 +71,14 @@ if (isset ($_POST)) {
     <div>Total</div>
 </div>
 <?php
-foreach ($_SESSION as $product) {
-    if ($product["quantity"] > 0) {
+for ($i = 0; $i < count($products); $i++) {
+    if (isset($_SESSION[$i]['quantity'])) {
         ?>
         <div class="containerCart">
-            <div><?= $product["name"] ?></div>
-
-            <?php if (isset($product["priceWOReduction"])) { ?>
-                <div>
-                    <div id="discountApply"><?php formatPrice($product["priceWOReduction"]) ?></div>
-                    <div><?php formatPrice($product["price"]); ?></div>
-                </div>
-            <?php } else { ?>
-                <div><?php formatPrice($product["price"]) ?></div>
-            <?php } ?>
-
-            <div><?= $product["quantity"] ?></div>
-
-            <div><?php formatPrice($product["price"] * $product["quantity"]) ?></div>
+            <div id="containerCartName"><?= $products[$i]["name"] ?></div>
+            <div><?php formatPrice($products[$i]["price"]) ?></div>
+            <div><?= $_SESSION[$i]['quantity'] ?></div>
+            <div><?php formatPrice($products[$i]["price"] * $_SESSION[$i]['quantity']) ?></div>
         </div>
     <?php }
 } ?>
@@ -98,66 +91,23 @@ foreach ($_SESSION as $product) {
     </div>
     <div class="summary">
         <div>
-            <?php formatPrice(allProductsExcludingVAT()) ?>
+            <?php formatPrice(allProductsPrice($_SESSION, $products) - allProductsExcludingVAT($_POST, $products)) ?>
         </div>
         <div>
-            <?php formatPrice(allProductsPrice()-allProductsExcludingVAT()) ?>
+            <?php formatPrice(allProductsExcludingVAT($_SESSION, $products)) ?>
         </div>
         <div>
-            <?php formatPrice(allProductsPrice()) ?>
+            <?php formatPrice(allProductsPrice($_SESSION, $products)) ?>
         </div>
     </div>
 </div>
-<hr>
 
-<div class="transporter">
-    <form action="cart.php" method="get">
-        <label for="dropdown">Select transporter:
-            <select name="dropdown">
-                <option value="">Choose wisely</option>
-                <option value=1>DPD</option>
-                <option value=2>La Poste</option>
-                <option value=3>Pickup in person</option>
-            </select>
-        </label>
-        <button>Confirm</button>
-    </form>
+
+<div class="validationButtonContainer">
+    <a href="confirmation.php">
+        <button id="validationButton">Order now</button>
+    </a>
 </div>
-<div class="containerSummary">
-    <div class="summary">
-        <div>Transport:</div>
-        <div>Weight:</div>
-        <div>Shipping cost:</div>
-        <div>Total price:</div>
-    </div>
-    <div class="summary">
-        <?php switch ($_GET["dropdown"]) {
-            case 1:
-                echo "DPD</br>";
-                echo allProductsWeight()/1000 . "kg</br>";
-                echo formatPrice(shippingDPD()) . "</br>";
-                formatPrice(allProductsPrice() + shippingDPD() );
-                break;
-            case 2:
-                echo "La Poste</br>";
-                echo allProductsWeight()/1000 . "kg</br>";
-                echo formatPrice(shippingLaPoste()) . "</br>";
-                formatPrice(allProductsPrice() + shippingLaPoste());
-                break;
-            case 3:
-                echo "Pickup in person</br>";
-                echo allProductsWeight()/1000 . "kg</br>";
-                echo "0€</br>";
-                formatPrice(allProductsPrice());
-                break;
-            default:
-                echo "Type</br>";
-                echo allProductsWeight()/1000 . "kg</br>";
-                echo "shipping cost</br>";
-                echo "Total price";
-                break;
-        } ?>
-    </div>
-</div>
+
 </body>
 </html>

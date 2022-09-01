@@ -3,40 +3,66 @@ session_start();
 require_once 'database.php';
 include "my-functions.php";
 include "query.php";
+include "create-class.php";
 
-if (!isset($_POST[0]) && !isset($_SESSION)) {
+$db = connection();
+
+if (!isset($_POST[0]['quantity']) && !isset($_SESSION[0]['quantity'])) {
     header('Location: index.php');
     exit;
 }
 
-echo "<pre>Post:";
-var_dump($_POST);
-echo "</pre>";
+//echo "<pre>Post:";
+//var_dump($_POST);
+//echo "</pre>";
 
-if (isset ($_POST[0])) {
-    foreach ($_POST as $key => $product) {
+$_SESSION['downloadItems'] = "";
+if (isset ($_POST[0]['quantity'])) {
+    $counting = 0;
+    foreach ($_POST as $product) {
 
         if ($product['quantity'] > 0) {
-            $_SESSION[$key]['quantity'] = $product['quantity'];
-            $_SESSION[$key]['idItem'] = $product['product_id'];
+            $_SESSION['items'][$counting]['quantity'] = $product['quantity'];
+            $_SESSION['items'][$counting]['idItem'] = $product['product_id'];
+            $_SESSION['downloadItems'] = $_SESSION['downloadItems'] . "product_id =  {$product['product_id']}  or ";
+            $_SESSION['orderedProduct'] = new OrderAcceptedProducts($db, $product['product_id'], $product['quantity']);
+            $counting++;
         }
     }
 }
-echo "<pre>Session:";
-var_dump($_SESSION);
-echo "</pre>";
+
 if (isset($db)) {
-    $productsFromBD = $db->prepare(query: takeAllProducts());
-    $productsFromBD->execute();
-    $products = $productsFromBD->fetchAll();
+    $products = getProductsByID($db);                                                                                   //get products by id
 } else {
     echo 'Something went wrong, the database is not available';
     exit();
 }
 
-//echo "<pre>Session:";
-//var_dump($_SESSION);
-//echo "</pre>";
+$_SESSION['order'] = new OrderAccepted($db);
+//$_SESSION['orderedProduct'] = new OrderAcceptedProducts($db);
+
+
+echo "<pre>Order:";
+var_dump($_SESSION['order']);
+echo "</pre>";
+
+echo "<pre>Products ordered:";
+var_dump($_SESSION['orderedProduct']);
+echo "</pre>";
+
+foreach ($products as $key => $product) {
+    $_SESSION['object'][$key] = new ItemsInOrder(
+        $product["name"],
+        $product["product_id"],
+        $product["price"],
+        $product["weight"],
+        $product["available"]
+    );
+}
+
+echo "<pre>Objects:";
+var_dump($_SESSION['object']);
+echo "</pre>";
 //?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,13 +98,13 @@ if (isset($db)) {
 </div>
 <?php
 for ($i = 0; $i < count($products); $i++) {
-    if (isset($_SESSION[$i]['quantity'])) {
+    if (isset($_SESSION['items'])) {
         ?>
         <div class="containerCart">
             <div id="containerCartName"><?= $products[$i]["name"] ?></div>
             <div><?php formatPrice($products[$i]["price"]) ?></div>
-            <div><?= $_SESSION[$i]['quantity'] ?></div>
-            <div><?php formatPrice($products[$i]["price"] * $_SESSION[$i]['quantity']) ?></div>
+            <div><?= $_SESSION['items'][$i]['quantity'] ?></div>
+            <div><?php formatPrice($products[$i]["price"] * $_SESSION['items'][$i]['quantity']) ?></div>
         </div>
     <?php }
 } ?>

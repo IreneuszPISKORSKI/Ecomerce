@@ -1,22 +1,29 @@
 <?php
 
-function takeAllProducts():string{
-    return 'SELECT * FROM products';
-}
 
-function first():string{
-    return 'SELECT * FROM products WHERE price >= 3000';
-}
 
-function second():string{
-    return 'SELECT * FROM products WHERE quantity = 0';
-}
+function takeAllProducts($db){
+    $query = 'SELECT * FROM products';
 
-function third():string{
-    return 'SELECT * FROM products, order_product WHERE products.product_id=order_product.product_id AND order_product.order_id = 1;';
+    $sql = $db->prepare($query);
+    $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
 }
 
 //get products by id
-//function getProductsByID():string{
-//    return 'SELECT * FROM products WHERE product.id -----------------------------------';
-//}
+function getProductsByID($db){
+    $query = "SELECT * FROM products WHERE {$_SESSION['downloadItems']} product_id = 999";
+
+    $sql = $db->prepare($query);
+    $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}
+
+//SELECT number FROM `orders` ORDER BY number DESC LIMIT 1;
+function lastOrderNumber($db){
+    $query = "SELECT number FROM `orders` ORDER BY number DESC LIMIT 1";
+
+    $sql = $db->prepare($query);
+    $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}

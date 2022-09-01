@@ -3,17 +3,41 @@
 require_once 'database.php';
 include "my-functions.php";
 include "query.php";
+include "create-class.php";
 
-if (isset($db)){
-$productsFromBD = $db->prepare(query: takeAllProducts());
-$productsFromBD ->execute();
-$products = $productsFromBD->fetchAll();
+session_start();
+session_destroy();
 
-}else {
+$db = connection();
+
+if (isset($db)) {
+    $products = takeAllProducts($db);
+
+    foreach ($products as $key => $product) {
+        $itemsInStock[$key] = new AllProductsInStock(
+            $product["name"],
+            $product["product_id"],
+            $product["price"],
+            $product["weight"],
+            $product["available"],
+            $product["description"],
+            $product["stock"],
+            $product["category_id"],
+            $product["image_url"]
+        );
+    }
+
+} else {
     echo 'Something went wrong, the database is not available';
     exit();
 }
+
+//echo "<pre>All items in stock:";
+//var_dump($itemsInStock);
+//echo "</pre>";
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,17 +72,12 @@ $products = $productsFromBD->fetchAll();
         <?php } ?>
     </div>
     <div class="validationButtonContainer">
-<!--        <input type="hidden" name="order" value="1">-->
+        <!--        <input type="hidden" name="order" value="1">-->
         <button type="submit" id="validationButton">Order</button>
     </div>
     <div class="validationButtonContainer">
         <a href="clear-session.php">Clear cart</a>
     </div>
 </form>
-<pre><?php
-    echo "Products:";
-    var_dump($products);
-    ?>
-</pre>
 </body>
 </html>

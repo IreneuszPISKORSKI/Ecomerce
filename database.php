@@ -1,13 +1,18 @@
 <?php
 
-$config = require_once 'config.php';
 
-try {
-    $db = new PDO("mysql:host={$config['host']};dbname={$config['database']};charset=utf8", $config['user'], $config['password'], [
+function connection(){
+
+    $host = 'localhost';
+    $user = 'irek';
+    $password = '';
+    $database = 'store';
+
+    $dsn = "mysql:host=$host;dbname=$database;charset=utf8";
+
+    $db = new PDO($dsn, $user, $password, [
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
-} catch (PDOException $error){
-    echo $error ->getMessage();
-    exit('Database error');
+    return $db;
 }

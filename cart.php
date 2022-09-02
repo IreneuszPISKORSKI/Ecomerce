@@ -109,9 +109,14 @@ for ($i = 0; $i < count($products); $i++) {
         </div>
     </div>
 </div>
+<pre>All items in stock:
+<?php var_dump($_SESSION); ?>
+</pre>
 
 <?php
-$totalPriceAll =allProductsPrice($_SESSION, $products);
+$totalPriceAll =allProductsPrice($products);
+$totalWeightAll = allProductsWeight();
+echo $totalWeightAll;
 $_SESSION['order'] = new OrderAccepted($db, $totalPriceAll); ?>
 
 <pre>All items in stock:

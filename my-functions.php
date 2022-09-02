@@ -20,7 +20,7 @@ function discountedPrice(int $price, int $discount): int
     return $price - (($price * $discount) / 100);
 }
 
-function allProductsPrice(array $post, array $products): int
+function allProductsPrice(array $products): int
 {
     $totalProductsPrice = 0;
     for ($i = 0; $i < count($products); $i++) {
@@ -36,6 +36,14 @@ function allProductsExcludingVAT(array $post, array $products): int
     return ((allProductsPrice($post, $products) * 20)/100);
 }
 
+function allProductsWeight(): int
+{
+    $totalWeight = 0;
+    foreach ($_SESSION as $product) {                                                                                   //funkcja do naprawy
+        $totalWeight = $totalWeight + $product['weight'] * $product['quantity'];
+    }
+    return $totalWeight;
+}
 
 
 
@@ -43,20 +51,6 @@ function allProductsExcludingVAT(array $post, array $products): int
 
 
 
-
-
-
-
-//
-//function allProductsWeight(): int
-//{
-//    $totalWeight = 0;
-//    foreach ($_SESSION as $product) {
-//        $totalWeight = $totalWeight + $product['weight'] * $product['quantity'];
-//    }
-//    return $totalWeight;
-//}
-//
 //function shippingCost(): int
 //{
 //    if (allProductsWeight() < 500) {

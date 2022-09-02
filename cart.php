@@ -3,7 +3,9 @@ session_start();
 require_once 'database.php';
 include "my-functions.php";
 include "query.php";
-include "create-class.php";
+include "class/itemsInOrder.php";
+include "class/orderAccepted.php";
+include "class/orderAcceptedProducts.php";
 
 $db = connection();
 
@@ -38,17 +40,10 @@ if (isset($db)) {
     exit();
 }
 
-$_SESSION['order'] = new OrderAccepted($db);
-//$_SESSION['orderedProduct'] = new OrderAcceptedProducts($db);
 
-
-echo "<pre>Order:";
-var_dump($_SESSION['order']);
-echo "</pre>";
-
-echo "<pre>Products ordered:";
-var_dump($_SESSION['orderedProduct']);
-echo "</pre>";
+//echo "<pre>Order:";
+//var_dump($_SESSION['order']);
+//echo "</pre>";
 
 foreach ($products as $key => $product) {
     $_SESSION['object'][$key] = new ItemsInOrder(
@@ -60,9 +55,6 @@ foreach ($products as $key => $product) {
     );
 }
 
-echo "<pre>Objects:";
-var_dump($_SESSION['object']);
-echo "</pre>";
 //?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,16 +66,6 @@ echo "</pre>";
     <title>Cart</title>
 </head>
 <body>
-<!--<pre>--><?php
-//    echo "Post:";
-//    var_dump($_POST);
-//    ?>
-<!--</pre>-->
-<!--<pre>--><?php
-//    echo "Session:";
-//    var_dump($_SESSION);
-//    ?>
-<!--</pre>-->
 
 <div class="validationButtonContainer">
     <a href="index.php">
@@ -101,10 +83,10 @@ for ($i = 0; $i < count($products); $i++) {
     if (isset($_SESSION['items'])) {
         ?>
         <div class="containerCart">
-            <div id="containerCartName"><?= $products[$i]["name"] ?></div>
-            <div><?php formatPrice($products[$i]["price"]) ?></div>
+            <div id="containerCartName"><?= $_SESSION['object'][$i]->name ?></div>
+            <div><?= formatPrice($_SESSION['object'][$i]->price) ?></div>
             <div><?= $_SESSION['items'][$i]['quantity'] ?></div>
-            <div><?php formatPrice($products[$i]["price"] * $_SESSION['items'][$i]['quantity']) ?></div>
+            <div><?= formatPrice($_SESSION['object'][$i]->price * $_SESSION['items'][$i]['quantity']) ?></div>
         </div>
     <?php }
 } ?>
@@ -117,17 +99,24 @@ for ($i = 0; $i < count($products); $i++) {
     </div>
     <div class="summary">
         <div>
-            <?php formatPrice(allProductsPrice($_SESSION, $products) - allProductsExcludingVAT($_POST, $products)) ?>
+            <?= formatPrice(allProductsPrice($_SESSION, $products) - allProductsExcludingVAT($_POST, $products)) ?>
         </div>
         <div>
-            <?php formatPrice(allProductsExcludingVAT($_SESSION, $products)) ?>
+            <?= formatPrice(allProductsExcludingVAT($_SESSION, $products)) ?>
         </div>
         <div>
-            <?php formatPrice(allProductsPrice($_SESSION, $products)) ?>
+            <?= formatPrice(allProductsPrice($_SESSION, $products)) ?>
         </div>
     </div>
 </div>
 
+<?php
+$totalPriceAll =allProductsPrice($_SESSION, $products);
+$_SESSION['order'] = new OrderAccepted($db, $totalPriceAll); ?>
+
+<pre>All items in stock:
+<?php var_dump($_SESSION['order']); ?>
+</pre>
 
 <div class="validationButtonContainer">
     <a href="confirmation.php">

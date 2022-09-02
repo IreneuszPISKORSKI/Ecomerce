@@ -1,7 +1,5 @@
 <?php
 
-
-
 function takeAllProducts($db){
     $query = 'SELECT * FROM products';
 
@@ -27,3 +25,5 @@ function lastOrderNumber($db){
     $sql->execute();
     return $sql->fetchAll(PDO::FETCH_ASSOC);
 }
+
+

@@ -3,7 +3,7 @@
 require_once 'database.php';
 include "my-functions.php";
 include "query.php";
-include "create-class.php";
+include "class/itemInStock.php";
 
 session_start();
 session_destroy();
@@ -14,7 +14,7 @@ if (isset($db)) {
     $products = takeAllProducts($db);
 
     foreach ($products as $key => $product) {
-        $itemsInStock[$key] = new AllProductsInStock(
+        $itemsInStock[$key] = new ItemInStock(
             $product["name"],
             $product["product_id"],
             $product["price"],
@@ -26,6 +26,7 @@ if (isset($db)) {
             $product["image_url"]
         );
     }
+
 
 } else {
     echo 'Something went wrong, the database is not available';
@@ -51,25 +52,13 @@ if (isset($db)) {
 <body>
 <form action="cart.php" method="post">
     <div class="containerAll">
-        <?php foreach ($products as $key => $product) { ?>
-            <div>
-                <div class="containerItem">
-                    <div>
-                        <img src="<?= $product["image_url"] ?>" alt="Photo of iPhone" height="100">
-                    </div>
-                    <div>
-                        <h3>Name: <?= $product["name"] ?></h3>
-                        <p>Description: <?= $product["description"] ?></p>
-                        <p>Price: <?php formatPrice($product["price"]) ?></p>
-                        <p>Weight: <?= $product["weight"] ?>g</p>
-                        <label for="quantity">Quantity:
-                            <input type="number" name="<?= $key ?>[quantity]" value="0" min="0">
-                        </label>
-                        <input type="hidden" name="<?= $key ?>[product_id]" value="<?= $product['product_id'] ?>">
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
+
+        <?php
+        foreach ($itemsInStock as $i => $product){
+        echo $product->displayItem($i);
+         }
+        ?>
+
     </div>
     <div class="validationButtonContainer">
         <!--        <input type="hidden" name="order" value="1">-->

@@ -1,8 +1,13 @@
 <?php
 
-function formatPrice(int $enCentimes): void
+function formatPrice(int $enCentimes):string
 {
-    echo number_format(($enCentimes / 100), 2, ",", ".") . "€";
+    return number_format(($enCentimes / 100), 2, ",", ".") . "€";
+}
+
+function formatOrderNumber($number):string
+{
+    return sprintf("%'010d\n", $number);
 }
 
 function priceExcludingVAT(int $priceTTC): int
@@ -19,8 +24,8 @@ function allProductsPrice(array $post, array $products): int
 {
     $totalProductsPrice = 0;
     for ($i = 0; $i < count($products); $i++) {
-        if (isset($post[$i]["quantity"]) && $post[$i]["quantity"] > 0) {
-            $totalProductsPrice = $totalProductsPrice + $products[$i]['price'] * $post[$i]['quantity'];
+        if (isset($_SESSION['items'][$i]['quantity']) && $_SESSION['items'][$i]['quantity'] > 0) {
+            $totalProductsPrice = $totalProductsPrice + $_SESSION['object'][$i]->price * $_SESSION['items'][$i]['quantity'];
         }
     }
     return $totalProductsPrice;

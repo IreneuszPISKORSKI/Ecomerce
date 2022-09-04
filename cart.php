@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once 'database.php';
 include "my-functions.php";
 include "query.php";
@@ -14,32 +15,29 @@ if (!isset($_POST[0]['quantity']) && !isset($_SESSION[0]['quantity'])) {
     exit;
 }
 
-//echo "<pre>Post:";
-//var_dump($_POST);
-//echo "</pre>";
-
 $_SESSION['downloadItems'] = "";
 if (isset ($_POST[0]['quantity'])) {
     $counting = 0;
+    $thisOrderId = (lastOrderId($db)[0]['order_id']+1);
     foreach ($_POST as $product) {
 
         if ($product['quantity'] > 0) {
             $_SESSION['items'][$counting]['quantity'] = $product['quantity'];
             $_SESSION['items'][$counting]['idItem'] = $product['product_id'];
-            $_SESSION['downloadItems'] = $_SESSION['downloadItems'] . "product_id =  {$product['product_id']}  or ";
-            $_SESSION['orderedProduct'] = new OrderAcceptedProducts($db, $product['product_id'], $product['quantity']);
+
+            if ($counting==0) {
+                $_SESSION['downloadItems'] = "product_id =  {$product['product_id']}";
+            }else{
+                $_SESSION['downloadItems'] = $_SESSION['downloadItems'] . " or product_id =  {$product['product_id']}";
+            }
+
+            $_SESSION['orderedProduct'][$counting] = new OrderAcceptedProducts($thisOrderId, $product['product_id'], $product['quantity'], $counting);
             $counting++;
         }
     }
 }
 
-if (isset($db)) {
-    $products = getProductsByID($db);                                                                                   //get products by id
-} else {
-    echo 'Something went wrong, the database is not available';
-    exit();
-}
-
+$products = getProductsByID($db);
 
 //echo "<pre>Order:";
 //var_dump($_SESSION['order']);
@@ -53,9 +51,11 @@ foreach ($products as $key => $product) {
         $product["weight"],
         $product["available"]
     );
+    $_SESSION['orderedProduct'][$key]->total_product_price = $_SESSION['orderedProduct'][$key]->quantity * $_SESSION['object'][$key]->price;
+    $_SESSION['orderedProduct'][$key]->total_product_weight = $_SESSION['orderedProduct'][$key]->quantity * $_SESSION['object'][$key]->weight;
 }
 
-//?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,29 +99,30 @@ for ($i = 0; $i < count($products); $i++) {
     </div>
     <div class="summary">
         <div>
-            <?= formatPrice(allProductsPrice($_SESSION, $products) - allProductsExcludingVAT($_POST, $products)) ?>
+            <?= formatPrice(allProductsPrice() - allProductsExcludingVAT($_POST, $products)) ?>
         </div>
         <div>
             <?= formatPrice(allProductsExcludingVAT($_SESSION, $products)) ?>
         </div>
         <div>
-            <?= formatPrice(allProductsPrice($_SESSION, $products)) ?>
+            <?= formatPrice(allProductsPrice()) ?>
         </div>
     </div>
 </div>
-<pre>All items in stock:
-<?php var_dump($_SESSION); ?>
-</pre>
+<!--<pre>All items in stock:-->
+<?php //var_dump($_SESSION); ?>
+<!--</pre>-->
 
 <?php
-$totalPriceAll =allProductsPrice($products);
+$totalPriceAll =allProductsPrice();
 $totalWeightAll = allProductsWeight();
-echo $totalWeightAll;
-$_SESSION['order'] = new OrderAccepted($db, $totalPriceAll); ?>
+$_SESSION['order'] = new OrderAccepted($db, $totalPriceAll, $totalWeightAll); ?>
 
-<pre>All items in stock:
-<?php var_dump($_SESSION['order']); ?>
-</pre>
+<!--<pre>Order:-->
+<?php //var_dump($_SESSION['order']); ?>
+<!--All products in order:-->
+<?php //var_dump($_SESSION['orderedProduct']); ?>
+<!--</pre>-->
 
 <div class="validationButtonContainer">
     <a href="confirmation.php">

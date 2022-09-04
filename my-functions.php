@@ -1,11 +1,11 @@
 <?php
 
-function formatPrice(int $enCentimes):string
+function formatPrice(int $enCentimes): string
 {
     return number_format(($enCentimes / 100), 2, ",", ".") . "€";
 }
 
-function formatOrderNumber($number):string
+function formatOrderNumber($number): string
 {
     return sprintf("%'010d\n", $number);
 }
@@ -20,10 +20,10 @@ function discountedPrice(int $price, int $discount): int
     return $price - (($price * $discount) / 100);
 }
 
-function allProductsPrice(array $products): int
+function allProductsPrice(): int
 {
     $totalProductsPrice = 0;
-    for ($i = 0; $i < count($products); $i++) {
+    for ($i = 0; $i < count($_SESSION['object']); $i++) {
         if (isset($_SESSION['items'][$i]['quantity']) && $_SESSION['items'][$i]['quantity'] > 0) {
             $totalProductsPrice = $totalProductsPrice + $_SESSION['object'][$i]->price * $_SESSION['items'][$i]['quantity'];
         }
@@ -31,21 +31,19 @@ function allProductsPrice(array $products): int
     return $totalProductsPrice;
 }
 
-function allProductsExcludingVAT(array $post, array $products): int
-{
-    return ((allProductsPrice($post, $products) * 20)/100);
-}
-
 function allProductsWeight(): int
 {
-    $totalWeight = 0;
-    foreach ($_SESSION as $product) {                                                                                   //funkcja do naprawy
-        $totalWeight = $totalWeight + $product['weight'] * $product['quantity'];
+    $totalProductsWeight = 0;
+    for ($i = 0; $i < count($_SESSION['object']); $i++) {
+        $totalProductsWeight = $totalProductsWeight + $_SESSION['object'][$i]->weight * $_SESSION['items'][$i]['quantity'];
     }
-    return $totalWeight;
+    return $totalProductsWeight;
 }
 
-
+function allProductsExcludingVAT(array $post, array $products): int
+{
+    return ((allProductsPrice($post, $products) * 20) / 100);
+}
 
 
 

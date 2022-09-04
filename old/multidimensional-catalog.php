@@ -40,11 +40,11 @@ $products = [
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
     <title>Multidimensional-catalog</title>
 </head>
 <body>
-<form action="cart.php" method="post">
+<form action="../cart.php" method="post">
     <div class="containerAll">
         <?php foreach ($products as $modelTel => $product) { ?>
             <div>
@@ -86,7 +86,7 @@ $products = [
         <button type="submit" id="validationButton">Order</button>
     </div>
     <div class="validationButtonContainer">
-        <a href="clear-session.php">Clear cart</a>
+        <a href="../clear-session.php">Clear cart</a>
     </div>
 </form>
 </body>

@@ -37,7 +37,7 @@ if (isset ($_POST)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
     <title>Cart</title>
 </head>
 <body>
@@ -111,7 +111,7 @@ foreach ($_SESSION as $product) {
 <hr>
 
 <div class="transporter">
-    <form action="cart.php" method="get">
+    <form action="../cart.php" method="get">
         <label for="dropdown">Select transporter:
             <select name="dropdown">
                 <option value="">Choose wisely</option>

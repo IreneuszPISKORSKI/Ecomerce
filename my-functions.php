@@ -45,8 +45,13 @@ function allProductsExcludingVAT(array $post, array $products): int
     return ((allProductsPrice($post, $products) * 20) / 100);
 }
 
-
-
+function clearSessionFromProducts(){
+    $_SESSION['order'] = null ;
+    $_SESSION['orderedProduct'] = null;
+    $_SESSION['downloadItems'] = null;
+    $_SESSION['items'] = null ;
+    $_SESSION['object'] = null;
+}
 
 
 //function shippingCost(): int

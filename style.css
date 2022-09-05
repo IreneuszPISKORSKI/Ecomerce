@@ -60,3 +60,19 @@
     height: 50px;
     width: 250px;
 }
+
+.clientsList{
+    display: flex;
+    justify-content: space-evenly;
+    border: black solid 1px;
+}
+
+.client{
+    width: 10em;
+}
+
+.dis{
+    background: rgba(255,255,255,0);
+    border: none;
+    color: black;
+}

@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require_once 'database.php';
 include "my-functions.php";
 include "query.php";
@@ -18,16 +17,16 @@ if (!isset($_POST[0]['quantity']) && !isset($_SESSION[0]['quantity'])) {
 $_SESSION['downloadItems'] = "";
 if (isset ($_POST[0]['quantity'])) {
     $counting = 0;
-    $thisOrderId = (lastOrderId($db)[0]['order_id']+1);
+    $thisOrderId = (lastOrderId($db)[0]['order_id'] + 1);
     foreach ($_POST as $product) {
 
         if ($product['quantity'] > 0) {
             $_SESSION['items'][$counting]['quantity'] = $product['quantity'];
             $_SESSION['items'][$counting]['idItem'] = $product['product_id'];
 
-            if ($counting==0) {
+            if ($counting == 0) {
                 $_SESSION['downloadItems'] = "product_id =  {$product['product_id']}";
-            }else{
+            } else {
                 $_SESSION['downloadItems'] = $_SESSION['downloadItems'] . " or product_id =  {$product['product_id']}";
             }
 
@@ -38,10 +37,6 @@ if (isset ($_POST[0]['quantity'])) {
 }
 
 $products = getProductsByID($db);
-
-//echo "<pre>Order:";
-//var_dump($_SESSION['order']);
-//echo "</pre>";
 
 foreach ($products as $key => $product) {
     $_SESSION['object'][$key] = new ItemsInOrder(
@@ -109,26 +104,24 @@ for ($i = 0; $i < count($products); $i++) {
         </div>
     </div>
 </div>
-<!--<pre>All items in stock:-->
-<?php //var_dump($_SESSION); ?>
-<!--</pre>-->
 
 <?php
-$totalPriceAll =allProductsPrice();
+$totalPriceAll = allProductsPrice();
 $totalWeightAll = allProductsWeight();
-$_SESSION['order'] = new OrderAccepted($db, $totalPriceAll, $totalWeightAll); ?>
-
-<!--<pre>Order:-->
-<?php //var_dump($_SESSION['order']); ?>
-<!--All products in order:-->
-<?php //var_dump($_SESSION['orderedProduct']); ?>
-<!--</pre>-->
+$_SESSION['order'] = new OrderAccepted($db, $totalPriceAll, $totalWeightAll);
+?>
 
 <div class="validationButtonContainer">
     <a href="confirmation.php">
         <button id="validationButton">Order now</button>
     </a>
 </div>
+
+<pre>Order:
+<?php var_dump($_SESSION['order']); ?>
+All products in order:
+<?php var_dump($_SESSION['orderedProduct']); ?>
+</pre>
 
 </body>
 </html>

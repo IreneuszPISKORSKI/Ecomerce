@@ -1,12 +1,10 @@
 <?php
-include "class/clientList.php";
-require_once "database.php";
-include "query.php";
-//strona listy klientow i zarzadzanie nimi (dodawanie, usuwanie itd) https://miroslawzelent.pl/kurs-php/poznajemy-biblioteke-pdo/
 $db = connection();
-$allClients= getAllClients($db);
+
+
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +16,6 @@ $allClients= getAllClients($db);
     <title>Cart</title>
 </head>
 <body>
-
-<?php $clients = new ClientList($allClients); ?>
 
 <h2>Add a new client</h2>
 <form action="editClient.php" method="post">

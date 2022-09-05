@@ -1,12 +1,18 @@
 <?php
-include "itemsInOrder.php";
 
-class ItemInStock extends ItemsInOrder
+class ItemInStock
 {
-    public string $description;
-    public int $stock;
-    public int $category_id;
-    public string $image_url;
+    private string $name;
+    private int $product_id;
+    private int $price;
+    private int $weight;
+    private int $available;
+    private string $description;
+    private int $stock;
+    private int $category_id;
+    private string $image_url;
+
+
 
     function __construct($name, $product_id, $price, $weight, $available, $description, $stock, $category_id, $image_url)
     {
@@ -22,6 +28,7 @@ class ItemInStock extends ItemsInOrder
     }
 
     function displayItem($key): string
+    //getter
     {
         return '<div><div class="containerItem"><div><img src="'
             . $this->image_url

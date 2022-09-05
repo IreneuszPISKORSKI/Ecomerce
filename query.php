@@ -45,10 +45,9 @@ function sendOrder($db){
     $date = $_SESSION['order']->date;
     $total_price = $_SESSION['order']->total_price;
     $total_weight = $_SESSION['order']->total_weight;
-echo $date . "</br>";
+
     $query = "INSERT INTO `orders` (`number`, `customer_id`, `date`, `total_price`, `total_weight`)
             VALUES ('$order_number', $customer_id, '$date', $total_price, $total_weight);";
-echo $query . "</br>";
     $sql = $db->prepare($query);
     return $sql->execute();
 }
@@ -71,8 +70,23 @@ function sendItemsInOrder($db){
     }
 
     $query = "INSERT INTO `order_product` (`product_id`, `quantity`, `total_product_price`, `total_product_weight`, `order_id`) 
-VALUES $productsToSend; ";
+                VALUES $productsToSend; ";
 
     $sql = $db->prepare($query);
     return $sql->execute();
+}
+
+function getAllClients($db){
+    $query = 'SELECT * FROM `customers` ';
+
+    $sql = $db->prepare($query);
+    $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function editCustomer($db){
+    //$query = "UPDATE `customers` SET `customer_id`='[value-1]',`first_name`='[value-2]',`last_name`='[value-3]',`address`='[value-4]',`zip_code`='[value-5]',`city`='[value-6]' WHERE customer_id = XXX"
+    $sql = $db->prepare($query);
+    $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
 }

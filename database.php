@@ -4,9 +4,9 @@
 function connection(){
 
     $host = 'localhost';
-    $user = 'irek';
-    $password = '';
-    $database = 'store';
+    $user = 'ireneusz';
+    $password = '123azerty';
+    $database = 'shop';
 
     $dsn = "mysql:host=$host;dbname=$database;charset=utf8";
 
